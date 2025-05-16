@@ -37,7 +37,7 @@ class INaturalistAPI:
 
         photo = observation["photos"][0]
         # Replace 'square' with 'medium' in the URL to get a larger image
-        image_url = photo["url"].replace("square.jpeg", "medium.jpeg")
+        image_url = photo["url"].replace("square", "medium")
 
         output_dir = Path(output_dir)
         output_dir.mkdir(parents=True, exist_ok=True)
