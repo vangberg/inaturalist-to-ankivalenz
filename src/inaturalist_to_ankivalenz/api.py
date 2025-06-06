@@ -35,17 +35,22 @@ class INaturalistAPI:
         if not observation.get("photos"):
             return None
 
+        output_dir = Path(output_dir)
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        image_path = output_dir / f"observation-{observation['id']}.jpg"
+        
+        # Check if image already exists on disk
+        if image_path.exists():
+            return image_path
+
         photo = observation["photos"][0]
         # Replace 'square' with 'medium' in the URL to get a larger image
         image_url = photo["url"].replace("square", "medium")
 
-        output_dir = Path(output_dir)
-        output_dir.mkdir(parents=True, exist_ok=True)
-
         response = requests.get(image_url)
         response.raise_for_status()
 
-        image_path = output_dir / f"observation-{observation['id']}.jpg"
         image_path.write_bytes(response.content)
 
         return image_path
